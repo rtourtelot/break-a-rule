@@ -3,35 +3,35 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
-    "@nivo/bar": "^0.88.0",
-    "@nivo/core": "^0.88.0",
-    "@nivo/heatmap": "^0.88.0",
-    "@nivo/line": "^0.88.0",
-    "@nivo/radar": "^0.88.0",
-    "@prisma/client": "^6.2.1",
-    "@vercel/postgres": "^0.10.0",
-    "jspdf": "^2.5.2",
-    "next": "15.1.6",
-    "prisma": "^6.2.1",
+    "@nivo/bar": "^0.83.0",
+    "@nivo/core": "^0.83.0",
+    "@nivo/heatmap": "^0.83.0",
+    "@nivo/line": "^0.83.0",
+    "@nivo/radar": "^0.83.0",
+    "@prisma/client": "^5.8.1",
+    "@vercel/postgres": "^0.5.1",
+    "jspdf": "^2.5.1",
+    "next": "14.0.4",
+    "prisma": "^5.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-markdown": "^9.0.3"
+    "react-markdown": "^9.0.1"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "eslint": "^9",
-    "eslint-config-next": "15.1.6",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "@types/node": "^20.10.6",
+    "@types/react": "^18.2.46",
+    "@types/react-dom": "^18.2.18",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.56.0",
+    "eslint-config-next": "14.0.4",
+    "postcss": "^8.4.32",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.3.3"
   }
 }
