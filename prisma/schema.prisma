@@ -1,0 +1,42 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model QuizResult {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now())
+  
+  // Overall scores for each rule
+  scores    Json      // Stores the 7 rule scores as a JSON object
+  
+  // Individual question responses
+  responses QuestionResponse[]
+  
+  // Metadata
+  deviceId  String?
+  userAgent String?
+  ipAddress String?
+
+  @@index([createdAt])
+}
+
+model QuestionResponse {
+  id           String     @id @default(cuid())
+  quizResult   QuizResult @relation(fields: [quizResultId], references: [id])
+  quizResultId String
+  
+  questionId   Int        // Question number
+  ruleType     String     // Which rule this question belongs to
+  score        Int        // 1-5 response
+  
+  @@index([ruleType])
+  @@index([quizResultId])
+} 

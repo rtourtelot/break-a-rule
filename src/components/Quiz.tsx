@@ -133,35 +133,18 @@ export default function Quiz() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Fixed Header */}
-      <div className="fixed top-0 left-0 right-0 bg-slate-950 backdrop-blur-sm border-b border-gray-800 z-50">
-        {/* Progress bar */}
-        <div className="h-1 bg-gray-800">
+      {/* Fixed Header - Progress bar only */}
+      <div className="fixed top-0 left-0 right-0 z-50">
+        <div className="h-2 bg-gray-100">
           <div 
             className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 transition-all duration-500 ease-out"
             style={{ width: `${((currentGroup + 1) / totalGroups) * 100}%` }}
           />
         </div>
-        
-        {/* Rule Scores and Section Indicator */}
-        <div className="max-w-7xl mx-auto px-4 py-3">
-          <div className="space-y-4">
-            <div className="flex justify-end">
-              <span className="text-sm text-gray-400">
-                Section {currentGroup + 1} of {totalGroups}
-              </span>
-            </div>
-            <RuleScores 
-              currentGroup={currentGroup} 
-              scores={scores}
-              showScores={showScores}
-            />
-          </div>
-        </div>
       </div>
 
       {/* Main Content */}
-      <div className={currentGroup === 0 ? "pt-24 pb-16" : "pt-36 pb-16"}>
+      <div className={currentGroup === 0 ? "pt-8 pb-16" : "pt-8 pb-16"}>
         <div className="max-w-3xl mx-auto px-6">
           <div className="space-y-16">
             {/* Title and description - only show on first screen */}
@@ -172,7 +155,7 @@ export default function Quiz() {
                 </h1>
                 <div className="space-y-2 text-xl text-gray-600">
                   <p>In just 5 minutes you'll discover the most inspiring stories you have to tell.</p>
-                  <p>There are no right or wrong answers.</p>
+                  <p>There are no right or wrong answers, and it's all anonymous.</p>
                 </div>
               </div>
             )}
@@ -182,6 +165,13 @@ export default function Quiz() {
               className={`space-y-16 transition-all duration-300 transform
                 ${isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}`}
             >
+              {currentGroup > 0 && (
+                <div className="text-right">
+                  <span className="text-sm text-gray-500">
+                    Section {currentGroup + 1} of {totalGroups}
+                  </span>
+                </div>
+              )}
               {currentQuestions.map((question, index) => (
                 <div 
                   key={question.id} 
