@@ -123,10 +123,10 @@ export default function RuleScores({
       {/* Simplified feedback message */}
       {lastCompletedRule && lastCompletedScore && (
         <div className="flex items-center gap-3">
-          <div className="text-base font-medium text-indigo-600 uppercase tracking-wider">
+          <div className="text-base font-medium text-indigo-400 uppercase tracking-wider">
             BREAK A RULE: {lastCompletedRule.displayName}
           </div>
-          <div className="text-gray-600">
+          <div className="text-gray-300">
             {getScoreFeedback(lastCompletedRule.name, lastCompletedScore)}
           </div>
         </div>

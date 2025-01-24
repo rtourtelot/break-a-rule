@@ -74,6 +74,7 @@ export default function Quiz() {
       // Reset transition
       setTimeout(() => setIsTransitioning(false), 100);
     } else {
+      window.scrollTo({ top: 0, behavior: 'instant' });
       setIsFinished(true);
     }
   };
@@ -131,11 +132,11 @@ export default function Quiz() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+    <div className="min-h-screen bg-white">
       {/* Fixed Header */}
-      <div className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-sm border-b border-gray-200 z-50">
+      <div className="fixed top-0 left-0 right-0 bg-slate-950 backdrop-blur-sm border-b border-gray-800 z-50">
         {/* Progress bar */}
-        <div className="h-1 bg-gray-100">
+        <div className="h-1 bg-gray-800">
           <div 
             className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 transition-all duration-500 ease-out"
             style={{ width: `${((currentGroup + 1) / totalGroups) * 100}%` }}
@@ -146,7 +147,7 @@ export default function Quiz() {
         <div className="max-w-7xl mx-auto px-4 py-3">
           <div className="space-y-4">
             <div className="flex justify-end">
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-gray-400">
                 Section {currentGroup + 1} of {totalGroups}
               </span>
             </div>
@@ -160,7 +161,7 @@ export default function Quiz() {
       </div>
 
       {/* Main Content */}
-      <div className={currentGroup === 0 ? "pt-24 pb-16" : "pt-36 pb-16"}> {/* Added pb-16 */}
+      <div className={currentGroup === 0 ? "pt-24 pb-16" : "pt-36 pb-16"}>
         <div className="max-w-3xl mx-auto px-6">
           <div className="space-y-16">
             {/* Title and description - only show on first screen */}
@@ -184,7 +185,7 @@ export default function Quiz() {
               {currentQuestions.map((question, index) => (
                 <div 
                   key={question.id} 
-                  className="space-y-8 first:pt-4" // Adjusted top padding
+                  className="space-y-8 first:pt-4"
                 >
                   <p className="text-xl text-gray-900 leading-relaxed">
                     <span className="text-gray-400 font-medium mr-3">
@@ -196,7 +197,7 @@ export default function Quiz() {
                   <div className="relative pt-12">
                     {/* Enhanced value box - now horizontal */}
                     <div 
-                      className="absolute -top-2 left-1/2 transform -translate-x-1/2 bg-white shadow-lg rounded-xl z-20 transition-all duration-150 flex items-center"
+                      className="absolute -top-2 left-1/2 transform -translate-x-1/2 bg-white shadow-lg rounded-xl z-20 transition-all duration-150 flex items-center border border-gray-100"
                     >
                       <div className="px-4 py-3 border-r border-gray-100">
                         <span className="text-2xl font-medium text-gray-700">
@@ -261,14 +262,13 @@ export default function Quiz() {
               <button
                 onClick={handlePrevious}
                 disabled={currentGroup === 0}
-                className="px-6 py-3 text-sm font-medium text-gray-700 hover:text-gray-900 disabled:opacity-50 transition-colors duration-150"
+                className="px-6 py-3 text-sm font-medium text-gray-600 hover:text-gray-900 disabled:opacity-50 transition-colors duration-150"
               >
                 Previous
               </button>
 
               <button
                 onClick={handleNext}
-                disabled={currentGroup === totalGroups - 1}
                 className="px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full text-sm font-medium text-white hover:from-blue-600 hover:to-indigo-600 disabled:opacity-50 shadow-md hover:shadow-lg transition-all duration-150"
               >
                 {currentGroup === totalGroups - 1 ? 'Finish' : 'Next'}

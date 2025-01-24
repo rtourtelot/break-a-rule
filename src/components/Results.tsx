@@ -5,17 +5,28 @@ type ResultsProps = {
   onRestart: () => void;
 };
 
+// Add a mapping of rules to their display names
+const ruleDisplayNames: Record<string, string> = {
+  Authenticity: "Rule to break: Be Normal",
+  Courage: "Rule to break: Avoid Mistakes",
+  Vulnerability: "Rule to break: Be Independent",
+  Diligence: "Rule to break: Stay Comfortable",
+  Significance: "Rule to break: Pretend You Don't Matter",
+  AuthenticRelationship: "Rule to break: Stay in Control",
+  IntegrityOfPurpose: "Rule to break: Be Popular"
+};
+
 export default function Results({ scores, onRestart }: ResultsProps) {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-16">
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 from-40% via-gray-900 via-65% to-gray-100 py-16">
       <div className="max-w-4xl mx-auto px-6">
         <div className="space-y-16">
           {/* Header */}
           <div className="text-center space-y-4">
-            <h1 className="text-4xl font-medium tracking-tight text-gray-900">
+            <h1 className="text-4xl font-medium tracking-tight text-white bg-clip-text">
               Your Story Finder Results
             </h1>
-            <p className="text-xl text-gray-600">
+            <p className="text-xl text-gray-300">
               Here's what we discovered about the stories you have to tell
             </p>
           </div>
@@ -31,6 +42,9 @@ export default function Results({ scores, onRestart }: ResultsProps) {
                   <h2 className="text-2xl font-medium text-indigo-600">
                     {rule.replace(/([A-Z])/g, ' $1').trim()}
                   </h2>
+                  <div className="text-base text-gray-600">
+                    {ruleDisplayNames[rule]}
+                  </div>
                   <div className="flex items-center gap-3">
                     <div className="text-4xl font-bold text-gray-900">
                       {Math.round(score)}%
