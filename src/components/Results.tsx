@@ -69,7 +69,7 @@ export default function Results({ scores, onRestart }: ResultsProps) {
   const handleDownload = () => {
     const pdf = new jsPDF();
     let yPos = 20;
-    const lineHeight = 10;
+    const lineHeight = 7;
     const margin = 20;
     const pageWidth = pdf.internal.pageSize.width;
     
@@ -79,7 +79,7 @@ export default function Results({ scores, onRestart }: ResultsProps) {
     const title = "Your Story Finder Results";
     const titleWidth = pdf.getTextWidth(title);
     pdf.text(title, (pageWidth - titleWidth) / 2, yPos);
-    yPos += lineHeight * 2;
+    yPos += lineHeight * 1.5;
 
     // Subtitle
     pdf.setFontSize(14);
@@ -87,7 +87,7 @@ export default function Results({ scores, onRestart }: ResultsProps) {
     const subtitle = "Here's what we discovered about the stories you have to tell";
     const subtitleWidth = pdf.getTextWidth(subtitle);
     pdf.text(subtitle, (pageWidth - subtitleWidth) / 2, yPos);
-    yPos += lineHeight * 2;
+    yPos += lineHeight * 1.5;
 
     // Results
     Object.entries(scores).forEach(([rule, score]) => {
@@ -116,10 +116,10 @@ export default function Results({ scores, onRestart }: ResultsProps) {
       const feedback = getFeedbackMessage(rule, score);
       const lines = pdf.splitTextToSize(feedback, pageWidth - (margin * 2));
       pdf.text(lines, margin, yPos);
-      yPos += (lineHeight * lines.length) + lineHeight;
+      yPos += (lineHeight * lines.length);
 
-      // Add extra space between rules
-      yPos += lineHeight;
+      // Add minimal space between rules
+      yPos += lineHeight * 0.5;
 
       // Check if we need a new page
       if (yPos > pdf.internal.pageSize.height - margin) {
