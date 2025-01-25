@@ -1,12 +1,6 @@
-'use client';
-
-import { useState } from 'react';
-import Welcome from '@/components/Welcome';
-import Quiz from '@/components/Quiz';
+import '@/app/globals.css';
 
 export default function Home() {
-  const [started, setStarted] = useState(false);
-
   return (
     <main className="min-h-screen p-8 bg-white">
       <div className="max-w-4xl mx-auto">
