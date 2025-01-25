@@ -151,7 +151,7 @@ export default function Quiz() {
             {currentGroup === 0 && (
               <div className="space-y-4 text-center">
                 <h1 className="text-4xl font-medium tracking-tight text-gray-900">
-                  The Break-a-Rule Quiz
+                  The Story Finder Quiz
                 </h1>
                 <div className="space-y-2 text-xl text-gray-600">
                   <p>In just 5 minutes you'll discover the most inspiring stories you have to tell.</p>
