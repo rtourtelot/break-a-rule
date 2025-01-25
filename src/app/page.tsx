@@ -2,9 +2,9 @@ import '@/app/globals.css';
 
 export default function Home() {
   return (
-    <main className="min-h-screen flex items-center justify-center bg-white">
-      <div className="max-w-4xl w-full px-6 py-12 md:py-24">
-        <h1 className="text-4xl md:text-6xl font-bold mb-8 text-gray-900">
+    <main className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-gray-50">
+      <div className="max-w-4xl w-full px-6 py-12 md:py-24 text-center">
+        <h1 className="text-4xl md:text-6xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
           Welcome to the Story Finder
         </h1>
         
@@ -18,7 +18,7 @@ export default function Home() {
 
         <a 
           href="/quiz" 
-          className="button-primary text-lg md:text-xl px-8 py-4 inline-block"
+          className="inline-block px-12 py-6 text-xl md:text-2xl font-medium text-white bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full shadow-lg hover:shadow-xl hover:from-blue-600 hover:to-indigo-600 transform hover:-translate-y-0.5 transition-all duration-150"
         >
           Find My Stories
         </a>
