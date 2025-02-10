@@ -115,10 +115,13 @@ export default function Results({ scores, onRestart }: ResultsProps) {
       
       // Split feedback into sections and format each appropriately
       const sections = feedback.split('\n\n').map(section => {
+        // Strip all markdown characters before determining the type
+        const cleanText = section.replace(/\*\*/g, '').replace(/\*/g, '');
+        
         if (section.startsWith('**')) {
           // Bold header
           return {
-            text: section.replace(/\*\*/g, ''),
+            text: cleanText,
             fontSize: 12,
             isBold: true,
             color: 0
@@ -126,7 +129,7 @@ export default function Results({ scores, onRestart }: ResultsProps) {
         } else if (section.startsWith('*')) {
           // Story prompt
           return {
-            text: section.replace(/\*/g, ''),
+            text: cleanText,
             fontSize: 12,
             isItalic: true,
             color: 60
@@ -134,7 +137,7 @@ export default function Results({ scores, onRestart }: ResultsProps) {
         } else {
           // Normal text
           return {
-            text: section,
+            text: cleanText,
             fontSize: 12,
             isNormal: true,
             color: 60
