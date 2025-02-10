@@ -4,17 +4,27 @@ export default function Home() {
   return (
     <main className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-gray-50">
       <div className="max-w-4xl w-full px-6 py-12 md:py-24 text-center">
-        <h1 className="text-4xl md:text-6xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
+        <h1 className="text-4xl md:text-6xl font-bold mb-12 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
           Welcome to the Story Finder
         </h1>
         
-        <p className="text-xl md:text-2xl mb-6 text-gray-600">
-          This quiz will help you discover where you naturally break from convention and where you might grow.
-        </p>
-        
-        <p className="text-xl md:text-2xl mb-12 text-gray-600">
-          Most importantly, it will help you find the stories that matter most to you.
-        </p>
+        <div className="space-y-8 mb-12">
+          <p className="text-xl md:text-2xl text-gray-600">
+            This quiz will help you discover where you already break free of hidden cultural rules and where you tend to follow them.
+          </p>
+          
+          <p className="text-xl md:text-2xl text-gray-600">
+            On the results page, you'll be prompted to find stories that highlight your rule breaking strengths and illustrate your opportunities for growth. Sharing these stories will allow you to authentically engage with others and inspire your own growth.
+          </p>
+          
+          <p className="text-xl md:text-2xl text-gray-600">
+            Enjoy the story finder.
+          </p>
+
+          <p className="text-xl md:text-2xl font-medium text-gray-800">
+            Rick Lewis
+          </p>
+        </div>
 
         <a 
           href="/quiz" 
