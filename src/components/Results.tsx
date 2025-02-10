@@ -111,15 +111,58 @@ export default function Results({ scores, onRestart }: ResultsProps) {
       yPos += lineHeight;
 
       // Feedback
-      pdf.setFontSize(12);
-      pdf.setTextColor(60);
       const feedback = getFeedbackMessage(rule, score);
-      const lines = pdf.splitTextToSize(feedback, pageWidth - (margin * 2));
-      pdf.text(lines, margin, yPos);
-      yPos += (lineHeight * lines.length);
+      
+      // Split feedback into sections and format each appropriately
+      const sections = feedback.split('\n\n').map(section => {
+        if (section.startsWith('**')) {
+          // Bold header
+          return {
+            text: section.replace(/\*\*/g, ''),
+            fontSize: 12,
+            isBold: true,
+            color: 0
+          };
+        } else if (section.startsWith('*')) {
+          // Story prompt
+          return {
+            text: section.replace(/\*/g, ''),
+            fontSize: 12,
+            isItalic: true,
+            color: 60
+          };
+        } else {
+          // Normal text
+          return {
+            text: section,
+            fontSize: 12,
+            isNormal: true,
+            color: 60
+          };
+        }
+      });
 
-      // Add minimal space between rules
-      yPos += lineHeight * 0.5;
+      // Render each section with appropriate styling
+      sections.forEach(section => {
+        pdf.setFontSize(section.fontSize);
+        pdf.setTextColor(section.color);
+        
+        if (section.isBold) {
+          pdf.setFont("helvetica", 'bold');
+        } else if (section.isItalic) {
+          pdf.setFont("helvetica", 'italic');
+        } else {
+          pdf.setFont("helvetica", 'normal');
+        }
+
+        const lines = pdf.splitTextToSize(section.text, pageWidth - (margin * 2));
+        pdf.text(lines, margin, yPos);
+        yPos += (lineHeight * lines.length);
+        yPos += lineHeight * 0.5; // Add some space between sections
+      });
+
+      // Add space between rules
+      yPos += lineHeight;
 
       // Check if we need a new page
       if (yPos > pdf.internal.pageSize.height - margin) {
