@@ -30,38 +30,38 @@ const getFeedbackMessage = (rule: string, score: number): string => {
     return score >= 70 ?
       "**Your stories likely showcase resilience and a fearless approach to life.**\n\nExplore stories where courageous risk-taking fueled your growth.\n\n*Story Prompt: Describe a time when you failed spectacularly. What did you learn from that experience, and how did it shape your approach to future challenges?*" :
       score >= 40 ?
-      "**Your stories reflect this gradual progress.**\n\nUncover stories of small brave acts that built your courage.\n\n*Writing Prompt: Recall a time when you overcame a small fear. How did that small act of courage feel, and what did you learn from it?*" :
-      "**Understanding these stories can pave the way to greater courage.**\n\nFind stories revealing the narratives behind your fear of failure.\n\n*Writing Prompt: Describe a situation where you avoided a risk, even though you secretly wished you hadn't. What kept you from taking that chance, and what would a more courageous path have looked like?*";
+      "**Your stories reflect this gradual progress.**\n\nUncover stories of small brave acts that built your courage.\n\n*Story Prompt: Recall a time when you overcame a small fear. How did that small act of courage feel, and what did you learn from it?*" :
+      "**Understanding these stories can pave the way to greater courage.**\n\nFind stories revealing the narratives behind your fear of failure.\n\n*Story Prompt: Describe a situation where you avoided a risk, even though you secretly wished you hadn't. What kept you from taking that chance, and what would a more courageous path have looked like?*";
   } else if (rule === 'Vulnerability') {
     return score >= 70 ?
-      "**Your stories are likely filled with examples of vulnerability and trust.**\n\nExplore stories showing vulnerability's power in building connections.\n\n*Writing Prompt: Describe a time you asked for help and felt genuinely supported. What did you learn about yourself and the power of connection?*" :
+      "**Your stories are likely filled with examples of vulnerability and trust.**\n\nExplore stories showing vulnerability's power in building connections.\n\n*Story Prompt: Describe a time you asked for help and felt genuinely supported. What did you learn about yourself and the power of connection?*" :
       score >= 40 ?
-      "**Your stories demonstrate this balance.**\n\nUncover stories where seeking support unexpectedly enriched your life's journey.\n\n*Writing Prompt: Recall a situation where you allowed someone to help you, even if it was difficult. What did you gain from that experience?*" :
-      "**Exploring these stories will reveal the potential for deepening connections.**\n\nFind stories revealing how interdependence can lead to greater fulfillment and vulnerability.\n\n*Writing Prompt: Describe a time when you could have used support but chose to handle things alone. What was the outcome, and what might a different approach have yielded?*";
+      "**Your stories demonstrate this balance.**\n\nUncover stories where seeking support unexpectedly enriched your life's journey.\n\n*Story Prompt: Recall a situation where you allowed someone to help you, even if it was difficult. What did you gain from that experience?*" :
+      "**Exploring these stories will reveal the potential for deepening connections.**\n\nFind stories revealing how interdependence can lead to greater fulfillment and vulnerability.\n\n*Story Prompt: Describe a time when you could have used support but chose to handle things alone. What was the outcome, and what might a different approach have yielded?*";
   } else if (rule === 'Diligence') {
     return score >= 70 ?
-      "**Your stories likely showcase sustained effort, perseverance, and a commitment to growth.**\n\nExplore stories highlighting your diligent perseverance.\n\n*Writing Prompt: Describe a time you worked incredibly hard to achieve a goal. What kept you going even when things got tough?*" :
+      "**Your stories likely showcase sustained effort, perseverance, and a commitment to growth.**\n\nExplore stories highlighting your diligent perseverance.\n\n*Story Prompt: Describe a time you worked incredibly hard to achieve a goal. What kept you going even when things got tough?*" :
       score >= 40 ?
-      "**Your stories reflect your growing capacity for sustained commitment.**\n\nUncover stories showcasing moments of pushing through discomfort to achieve your goals.\n\n*Writing Prompt: Recall a project or task you completed despite facing initial resistance or setbacks. What strategies did you employ to maintain your effort?*" :
-      "**Exploring these narratives will reveal your potential for sustained effort and diligence.**\n\nFind stories illustrating how embracing discomfort fuels growth and diligence.\n\n*Writing Prompt: Describe a time you avoided a challenging task. What could you have gained by facing that challenge, and what steps could you take to overcome similar situations in the future?*";
+      "**Your stories reflect your growing capacity for sustained commitment.**\n\nUncover stories showcasing moments of pushing through discomfort to achieve your goals.\n\n*Story Prompt: Recall a project or task you completed despite facing initial resistance or setbacks. What strategies did you employ to maintain your effort?*" :
+      "**Exploring these narratives will reveal your potential for sustained effort and diligence.**\n\nFind stories illustrating how embracing discomfort fuels growth and diligence.\n\n*Story Prompt: Describe a time you avoided a challenging task. What could you have gained by facing that challenge, and what steps could you take to overcome similar situations in the future?*";
   } else if (rule === 'Significance') {
     return score >= 70 ?
-      "**Your stories are filled with examples of owning your presence and making a difference.**\n\nExplore stories showcasing your significant impact on others.\n\n*Writing Prompt: Describe a time when you made a significant contribution to a project, relationship, or community. What was the impact of your actions, and how did this contribute to your sense of self-worth?*" :
+      "**Your stories are filled with examples of owning your presence and making a difference.**\n\nExplore stories showcasing your significant impact on others.\n\n*Story Prompt: Describe a time when you made a significant contribution to a project, relationship, or community. What was the impact of your actions, and how did this contribute to your sense of self-worth?*" :
       score >= 40 ?
-      "**Your stories reflect this growing self-awareness.**\n\nUncover stories where taking action revealed your growing significance.\n\n*Writing Prompt: Recall a situation where you took action, even though you felt hesitant. How did your actions affect the situation or those around you?*" :
-      "**Exploring these narratives will help you recognize your inherent significance.**\n\nFind stories illustrating how recognizing your self-worth enhances your impact.\n\n*Writing Prompt: Describe a time you felt insignificant or overlooked. What would it feel like to acknowledge your contribution and own your accomplishments?*";
+      "**Your stories reflect this growing self-awareness.**\n\nUncover stories where taking action revealed your growing significance.\n\n*Story Prompt: Recall a situation where you took action, even though you felt hesitant. How did your actions affect the situation or those around you?*" :
+      "**Exploring these narratives will help you recognize your inherent significance.**\n\nFind stories illustrating how recognizing your self-worth enhances your impact.\n\n*Story Prompt: Describe a time you felt insignificant or overlooked. What would it feel like to acknowledge your contribution and own your accomplishments?*";
   } else if (rule === 'AuthenticRelationship') {
     return score >= 70 ?
-      "**Your stories are likely rich with examples of genuine intimacy and trust.**\n\nExplore stories of authentic connection over control.\n\n*Writing Prompt: Describe a close relationship where trust and mutual respect are key components. How did you foster this connection, and what role did letting go of control play?*" :
+      "**Your stories are likely rich with examples of genuine intimacy and trust.**\n\nExplore stories of authentic connection over control.\n\n*Story Prompt: Describe a close relationship where trust and mutual respect are key components. How did you foster this connection, and what role did letting go of control play?*" :
       score >= 40 ?
-      "**Your stories illustrate this progress.**\n\nUncover stories where releasing control fostered deeper, more meaningful relationships.\n\n*Writing Prompt: Recall a situation where you had to compromise or let go of some control to build a positive relationship. How did this compromise affect the dynamics of the relationship?*" :
-      "**Understanding these narratives will open doors to deeper, more authentic connections.**\n\nFind stories revealing how letting go can build stronger connections.\n\n*Writing Prompt: Describe a relationship where your need for control created tension. What could you have done differently to foster a more authentic connection?*";
+      "**Your stories illustrate this progress.**\n\nUncover stories where releasing control fostered deeper, more meaningful relationships.\n\n*Story Prompt: Recall a situation where you had to compromise or let go of some control to build a positive relationship. How did this compromise affect the dynamics of the relationship?*" :
+      "**Understanding these narratives will open doors to deeper, more authentic connections.**\n\nFind stories revealing how letting go can build stronger connections.\n\n*Story Prompt: Describe a relationship where your need for control created tension. What could you have done differently to foster a more authentic connection?*";
   } else {
     return score >= 70 ?
-      "**Your stories are likely filled with examples of pursuing your purpose despite external pressure.**\n\nExplore stories celebrating your unwavering integrity of purpose.\n\n*Writing Prompt: Describe a time when you faced disapproval for pursuing a goal that was deeply meaningful to you. How did you stay true to your values, and what did you learn from this experience?*" :
+      "**Your stories are likely filled with examples of pursuing your purpose despite external pressure.**\n\nExplore stories celebrating your unwavering integrity of purpose.\n\n*Story Prompt: Describe a time when you faced disapproval for pursuing a goal that was deeply meaningful to you. How did you stay true to your values, and what did you learn from this experience?*" :
       score >= 40 ?
-      "**Your stories demonstrate this growing integrity.**\n\nUncover stories highlighting choices where integrity outweighed approval.\n\n*Writing Prompt: Recall a time when you made a difficult decision based on your values, even though it was unpopular. What did this decision teach you about your personal priorities?*" :
-      "**Exploring these will pave the way toward greater alignment with your true purpose and integrity.**\n\nFind stories revealing how staying true to yourself builds purpose.\n\n*Writing Prompt: Describe a situation where you prioritized external approval over your own values. How did this compromise affect your sense of purpose, and how might you approach similar situations differently in the future?*";
+      "**Your stories demonstrate this growing integrity.**\n\nUncover stories highlighting choices where integrity outweighed approval.\n\n*Story Prompt: Recall a time when you made a difficult decision based on your values, even though it was unpopular. What did this decision teach you about your personal priorities?*" :
+      "**Exploring these will pave the way toward greater alignment with your true purpose and integrity.**\n\nFind stories revealing how staying true to yourself builds purpose.\n\n*Story Prompt: Describe a situation where you prioritized external approval over your own values. How did this compromise affect your sense of purpose, and how might you approach similar situations differently in the future?*";
   }
 };
 
@@ -84,7 +84,7 @@ export default function Results({ scores, onRestart }: ResultsProps) {
     // Subtitle
     pdf.setFontSize(14);
     pdf.setTextColor(100);
-    const subtitle = "Here's what we discovered about the stories you have to tell";
+    const subtitle = "Here's what we discovered about the best stories you have to tell:";
     const subtitleWidth = pdf.getTextWidth(subtitle);
     pdf.text(subtitle, (pageWidth - subtitleWidth) / 2, yPos);
     yPos += lineHeight * 1.5;
@@ -107,7 +107,7 @@ export default function Results({ scores, onRestart }: ResultsProps) {
       // Score
       pdf.setFontSize(20);
       pdf.setTextColor(0, 0, 0);
-      pdf.text(`${Math.round(score)}%`, margin, yPos);
+      pdf.text(`${Math.round(score)}`, margin, yPos);
       yPos += lineHeight;
 
       // Feedback
@@ -142,7 +142,7 @@ export default function Results({ scores, onRestart }: ResultsProps) {
               Your Story Finder Results
             </h1>
             <p className="text-xl text-gray-600">
-              Here's what we discovered about the stories you have to tell
+              Here's what we discovered about the best stories you have to tell:
             </p>
           </div>
 
@@ -164,7 +164,7 @@ export default function Results({ scores, onRestart }: ResultsProps) {
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="text-4xl font-bold text-gray-900">
-                      {Math.round(score)}%
+                      {Math.round(score)}
                     </div>
                     <div className="h-2 flex-1 bg-gray-100 rounded-full overflow-hidden">
                       <div 
