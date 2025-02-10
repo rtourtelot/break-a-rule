@@ -71,8 +71,20 @@ export default function Results({ scores, onRestart }: ResultsProps) {
     let yPos = 20;
     const lineHeight = 7;
     const margin = 20;
+    const bottomMargin = 30; // Increased bottom margin
     const pageWidth = pdf.internal.pageSize.width;
+    const pageHeight = pdf.internal.pageSize.height;
     
+    // Helper function to check and add new page if needed
+    const checkAndAddPage = (requiredSpace: number) => {
+      if (yPos + requiredSpace > pageHeight - bottomMargin) {
+        pdf.addPage();
+        yPos = margin;
+        return true;
+      }
+      return false;
+    };
+
     // Title
     pdf.setFontSize(24);
     pdf.setTextColor(0, 0, 0);
@@ -87,10 +99,13 @@ export default function Results({ scores, onRestart }: ResultsProps) {
     const subtitle = "Here's what we discovered about the best stories you have to tell:";
     const subtitleWidth = pdf.getTextWidth(subtitle);
     pdf.text(subtitle, (pageWidth - subtitleWidth) / 2, yPos);
-    yPos += lineHeight * 1.5;
+    yPos += lineHeight * 2;
 
     // Results
     Object.entries(scores).forEach(([rule, score]) => {
+      // Check if we need a new page for the entire rule section
+      checkAndAddPage(lineHeight * 6); // Minimum space needed for rule header
+
       // Rule name
       pdf.setFontSize(16);
       pdf.setTextColor(0, 0, 0);
@@ -108,7 +123,7 @@ export default function Results({ scores, onRestart }: ResultsProps) {
       pdf.setFontSize(20);
       pdf.setTextColor(0, 0, 0);
       pdf.text(`${Math.round(score)}`, margin, yPos);
-      yPos += lineHeight;
+      yPos += lineHeight * 1.5;
 
       // Feedback
       const feedback = getFeedbackMessage(rule, score);
@@ -158,20 +173,30 @@ export default function Results({ scores, onRestart }: ResultsProps) {
           pdf.setFont("helvetica", 'normal');
         }
 
+        // Calculate the height needed for this text section
         const lines = pdf.splitTextToSize(section.text, pageWidth - (margin * 2));
+        const sectionHeight = (lineHeight * lines.length) + (lineHeight * 0.5);
+
+        // Check if we need a new page before rendering this section
+        if (checkAndAddPage(sectionHeight)) {
+          // Reset font settings after page break
+          pdf.setFontSize(section.fontSize);
+          pdf.setTextColor(section.color);
+          if (section.isBold) {
+            pdf.setFont("helvetica", 'bold');
+          } else if (section.isItalic) {
+            pdf.setFont("helvetica", 'italic');
+          } else {
+            pdf.setFont("helvetica", 'normal');
+          }
+        }
+
         pdf.text(lines, margin, yPos);
-        yPos += (lineHeight * lines.length);
-        yPos += lineHeight * 0.5; // Add some space between sections
+        yPos += sectionHeight;
       });
 
       // Add space between rules
-      yPos += lineHeight;
-
-      // Check if we need a new page
-      if (yPos > pdf.internal.pageSize.height - margin) {
-        pdf.addPage();
-        yPos = margin;
-      }
+      yPos += lineHeight * 2;
     });
 
     // Save the PDF
