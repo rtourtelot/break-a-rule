@@ -27,6 +27,16 @@ const calculateRuleScore = (answers: Record<number, number>, ruleQuestions: Ques
   return (total / (ruleQuestions.length * 10)) * 100;
 };
 
+const ruleHeaders: Record<number, string> = {
+  0: "Rule 1 - Breaking the Rule 'Be Normal'",
+  1: "Rule 2 - Breaking the Rule 'Avoid Mistakes'",
+  2: "Rule 3 - Breaking the Rule 'Be Independent'",
+  3: "Rule 4 - Breaking the Rule 'Stay Comfortable'",
+  4: "Rule 5 - Breaking the Rule 'Pretend You Don't Matter'",
+  5: "Rule 6 - Breaking the Rule 'Stay in Control'",
+  6: "Rule 7 - Breaking the Rule 'Be Popular'"
+};
+
 export default function Quiz() {
   const [currentGroup, setCurrentGroup] = useState(0);
   const [answers, setAnswers] = useState<Record<number, number>>({});
@@ -172,6 +182,12 @@ export default function Quiz() {
                   </span>
                 </div>
               )}
+
+              {/* Rule Header */}
+              <div className="text-2xl font-medium text-indigo-600 mb-8">
+                {ruleHeaders[currentGroup]}
+              </div>
+
               {currentQuestions.map((question, index) => (
                 <div 
                   key={question.id} 
