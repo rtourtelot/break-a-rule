@@ -28,13 +28,13 @@ const calculateRuleScore = (answers: Record<number, number>, ruleQuestions: Ques
 };
 
 const ruleHeaders: Record<number, string> = {
-  0: "Rule 1 - Breaking the Rule 'Be Normal'",
-  1: "Rule 2 - Breaking the Rule 'Avoid Mistakes'",
-  2: "Rule 3 - Breaking the Rule 'Be Independent'",
-  3: "Rule 4 - Breaking the Rule 'Stay Comfortable'",
-  4: "Rule 5 - Breaking the Rule 'Pretend You Don't Matter'",
-  5: "Rule 6 - Breaking the Rule 'Stay in Control'",
-  6: "Rule 7 - Breaking the Rule 'Be Popular'"
+  0: "Rule 1 - Be Normal",
+  1: "Rule 2 - Avoid Mistakes",
+  2: "Rule 3 - Be Independent",
+  3: "Rule 4 - Stay Comfortable",
+  4: "Rule 5 - Pretend You Don't Matter",
+  5: "Rule 6 - Stay in Control",
+  6: "Rule 7 - Be Popular"
 };
 
 export default function Quiz() {

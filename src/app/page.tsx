@@ -1,31 +1,84 @@
 import '@/app/globals.css';
+import Image from 'next/image';
 
 export default function Home() {
   return (
     <main className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-gray-50">
       <div className="max-w-4xl w-full px-6 py-12 md:py-24">
-        <h1 className="text-4xl md:text-6xl font-bold mb-12 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
+        <h1 className="text-4xl md:text-6xl font-bold mb-12 text-blue-600">
           Welcome to the Story Finder
         </h1>
         
-        <div className="space-y-8 mb-12">
-          <p className="text-xl md:text-2xl text-gray-600 leading-normal">
-            This quiz will help you discover where you already break free of hidden cultural rules and where you tend to follow them.
+        <div className="space-y-6 mb-12">
+          <p className="text-xl md:text-2xl text-gray-600">
+            Hi, I'm Rick Lewis.
           </p>
-          
-          <p className="text-xl md:text-2xl text-gray-600 leading-normal">
-            On the results page, you'll be prompted to find stories that highlight your rule breaking strengths and illustrate your opportunities for growth. Sharing these stories will allow you to authentically engage with others and inspire your own growth.
-          </p>
-          
-          <p className="text-xl md:text-2xl text-gray-600">Enjoy the story finder.</p>
 
-          <p className="text-xl md:text-2xl font-medium text-gray-800">Rick Lewis</p>
+          <p className="text-xl md:text-2xl text-gray-600 leading-normal">
+            I'm a professional speaker, entertainer, published author, and writing coach.
+            My entire vocational life has been focused on communication skills—and the skill
+            of storytelling has far and away been the number one contributor to my success.
+          </p>
+          
+          <p className="text-xl md:text-2xl text-gray-600 leading-normal">
+            Living a story worth life is the first principle of great storytelling.
+            The good news is, most of us have lived a story worthy life.
+            The bad news is, we're not yet skilled at retrieving those stories from our personal history.
+          </p>
+
+          <p className="text-xl md:text-2xl text-gray-600 leading-normal">
+            My book <i>7 Rules You Were Born to Break</i> was written as a useful framework for living
+            our best lives in the future and also for discovering the most interesting stories
+            that are hidden in our past.
+          </p>
+
+          <p className="text-xl md:text-2xl text-gray-600 leading-normal">
+            Without needing to read my whole book, this quiz will introduce you to the 7 hidden
+            rules in our culture that many of us tend to follow and that undermine human thriving.
+            By the end of the quiz, you'll know which of these rules you'll most benefit from breaking,
+            and which ones you are already good at breaking.
+          </p>
+
+          <p className="text-xl md:text-2xl text-gray-600 leading-normal">
+            The Story Finder will translate your score, identify the themes of the best stories
+            you have to tell, and provide you with specific prompts that will help you find these stories.
+            The 7 Rule model gets right to the heart of our shared humanness, and when you find those
+            stories you'll be able to communicate with authenticity, credibility, and clarity.
+          </p>
+
+          <p className="text-xl md:text-2xl text-gray-600 leading-normal">
+            There are seven sections in this quiz—one for each rule—with four questions within each section.
+            You're just minutes away from some fascinating and useful information about your way of being
+            in the world and the lens you can use to share your life experience.
+          </p>
+
+          <p className="text-xl md:text-2xl text-gray-600">
+            I hope you enjoy the Story Finder.
+          </p>
+
+          <div className="flex items-center gap-6">
+            <div>
+              <p className="text-xl md:text-2xl text-gray-600 italic">
+                Let's get started,
+              </p>
+              <Image
+                src="/rick-lewis.png"
+                alt="Rick Lewis"
+                width={120}
+                height={120}
+                className="rounded-full shadow-lg mt-4"
+              />
+              <p className="text-xl md:text-2xl text-gray-600 italic mt-3">
+                Rick Lewis
+              </p>
+            </div>
+          </div>
         </div>
 
         <div className="text-center">
           <a 
             href="/quiz" 
-            className="inline-block px-12 py-6 text-xl md:text-2xl font-medium text-white bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full shadow-lg hover:shadow-xl hover:from-blue-600 hover:to-indigo-600 transform hover:-translate-y-0.5 transition-all duration-150"
+            className="inline-block px-12 py-6 text-xl md:text-2xl font-medium text-white bg-blue-500 rounded-full shadow-lg hover:shadow-xl hover:bg-blue-600 transform hover:-translate-y-0.5 transition-all duration-150"
           >
             Find My Stories
           </a>

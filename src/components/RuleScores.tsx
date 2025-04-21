@@ -5,13 +5,13 @@ type Rule = {
 };
 
 const rules: Rule[] = [
-  { name: 'Authenticity', displayName: 'BE NORMAL' },
-  { name: 'Courage', displayName: 'AVOID MISTAKES' },
-  { name: 'Vulnerability', displayName: 'BE INDEPENDENT' },
-  { name: 'Diligence', displayName: 'STAY COMFORTABLE' },
-  { name: 'Significance', displayName: 'PRETEND YOU DON\'T MATTER' },
-  { name: 'AuthenticRelationship', displayName: 'STAY IN CONTROL' },
-  { name: 'IntegrityOfPurpose', displayName: 'BE POPULAR' },
+  { name: 'Authenticity', displayName: 'Rule 1 - Be Normal' },
+  { name: 'Courage', displayName: 'Rule 2 - Avoid Mistakes' },
+  { name: 'Vulnerability', displayName: 'Rule 3 - Be Independent' },
+  { name: 'Diligence', displayName: 'Rule 4 - Stay Comfortable' },
+  { name: 'Significance', displayName: 'Rule 5 - Pretend You Don\'t Matter' },
+  { name: 'AuthenticRelationship', displayName: 'Rule 6 - Stay in Control' },
+  { name: 'IntegrityOfPurpose', displayName: 'Rule 7 - Be Popular' },
 ];
 
 type FeedbackMessage = {

@@ -17,13 +17,13 @@ type AnalyticsDashboardProps = {
 };
 
 const ruleDisplayNames: Record<string, string> = {
-  Authenticity: "Rule to break: Be Normal",
-  Courage: "Rule to break: Avoid Mistakes",
-  Vulnerability: "Rule to break: Be Independent",
-  Diligence: "Rule to break: Stay Comfortable",
-  Significance: "Rule to break: Pretend You Don't Matter",
-  AuthenticRelationship: "Rule to break: Stay in Control",
-  IntegrityOfPurpose: "Rule to break: Be Popular"
+  Authenticity: "Rule 1 - Be Normal",
+  Courage: "Rule 2 - Avoid Mistakes",
+  Vulnerability: "Rule 3 - Be Independent",
+  Diligence: "Rule 4 - Stay Comfortable",
+  Significance: "Rule 5 - Pretend You Don't Matter",
+  AuthenticRelationship: "Rule 6 - Stay in Control",
+  IntegrityOfPurpose: "Rule 7 - Be Popular"
 };
 
 export default function AnalyticsDashboard({ 

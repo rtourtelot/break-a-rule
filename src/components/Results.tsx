@@ -10,13 +10,13 @@ type ResultsProps = {
 
 // Add a mapping of rules to their display names
 const ruleDisplayNames: Record<string, string> = {
-  Authenticity: "Rule to break: Be Normal",
-  Courage: "Rule to break: Avoid Mistakes",
-  Vulnerability: "Rule to break: Be Independent",
-  Diligence: "Rule to break: Stay Comfortable",
-  Significance: "Rule to break: Pretend You Don't Matter",
-  AuthenticRelationship: "Rule to break: Stay in Control",
-  IntegrityOfPurpose: "Rule to break: Be Popular"
+  Authenticity: "Rule 1 - Be Normal",
+  Courage: "Rule 2 - Avoid Mistakes",
+  Vulnerability: "Rule 3 - Be Independent",
+  Diligence: "Rule 4 - Stay Comfortable",
+  Significance: "Rule 5 - Pretend You Don't Matter",
+  AuthenticRelationship: "Rule 6 - Stay in Control",
+  IntegrityOfPurpose: "Rule 7 - Be Popular"
 };
 
 const getFeedbackMessage = (rule: string, score: number): string => {
@@ -124,15 +124,8 @@ export default function Results({ scores, onRestart }: ResultsProps) {
       // Rule name
       pdf.setFontSize(16);
       pdf.setTextColor(0, 0, 0);
-      const ruleName = rule.replace(/([A-Z])/g, ' $1').trim();
-      pdf.text(ruleName, margin, yPos);
-      yPos += lineHeight;
-
-      // Rule to break
-      pdf.setFontSize(12);
-      pdf.setTextColor(100);
       pdf.text(ruleDisplayNames[rule], margin, yPos);
-      yPos += lineHeight;
+      yPos += lineHeight * 1.5;
 
       // Score
       pdf.setFontSize(20);
@@ -241,12 +234,9 @@ export default function Results({ scores, onRestart }: ResultsProps) {
               >
                 <div className="space-y-4">
                   <div>
-                    <h2 className="text-2xl font-medium text-indigo-600 mb-1">
+                    <h2 className="text-2xl font-medium text-indigo-600">
                       {ruleDisplayNames[rule]}
                     </h2>
-                    <div className="text-base text-gray-600">
-                      {rule.replace(/([A-Z])/g, ' $1').trim()}
-                    </div>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="text-4xl font-bold text-gray-900">
