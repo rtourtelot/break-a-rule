@@ -192,8 +192,13 @@ export default function Quiz() {
               )}
 
               {/* Rule Header */}
-              <div className="text-2xl font-medium text-indigo-600 mb-8">
-                {ruleHeaders[currentGroup]}
+              <div className="mb-2">
+                <div className="text-2xl font-medium text-indigo-600 mb-1">
+                  {ruleHeaders[currentGroup]}
+                </div>
+                <div className="text-base text-gray-500 mb-4">
+                  How often do you break this rule? Let's find out.
+                </div>
               </div>
 
               {currentQuestions.map((question, index) => (
