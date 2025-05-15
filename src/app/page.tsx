@@ -4,14 +4,24 @@ import Image from 'next/image';
 export default function Home() {
   return (
     <main className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-gray-50">
-      <div className="max-w-4xl w-full px-6 py-12 md:py-24">
-        <h1 className="text-4xl md:text-6xl font-bold mb-12 text-blue-600">
+      <div className="max-w-4xl w-full px-6 py-6 md:py-12">
+        <div className="flex justify-center mb-8">
+          <Image
+            src="/story-finder.png"
+            alt="Story Finder Logo"
+            width={140}
+            height={140}
+            className="rounded-full"
+            priority
+          />
+        </div>
+        <h1 className="text-2xl md:text-3xl font-bold mb-12 text-blue-600 text-center">
           Welcome to the Story Finder
         </h1>
         
         <div className="space-y-6 mb-12">
           <p className="text-xl md:text-2xl text-gray-600">
-            Hi, I'm Rick Lewis.
+            Hi, my name is Rick Lewis.
           </p>
 
           <p className="text-xl md:text-2xl text-gray-600 leading-normal">
