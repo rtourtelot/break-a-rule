@@ -5,9 +5,9 @@ export const metadata: Metadata = {
   title: 'Story Finder',
   description: 'Find your stories worth telling',
   icons: {
-    icon: '/story-finder.png',
-    shortcut: '/story-finder.png',
-    apple: '/story-finder.png',
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/favicon.ico',
   },
 }
 
