@@ -19,12 +19,14 @@
     "@nivo/radar": "0.83.0",
     "@prisma/client": "5.7.1",
     "@vercel/postgres": "0.5.1",
+    "js-cookie": "^3.0.5",
     "jspdf": "2.5.1",
     "next": "13.4.19",
     "prisma": "5.7.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-markdown": "8.0.7"
+    "react-markdown": "8.0.7",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@types/node": "20.8.9",

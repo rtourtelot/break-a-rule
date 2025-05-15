@@ -95,7 +95,10 @@ src/
     *   All quiz results stored anonymously on the back end.
 *   **Rule-Breaking Coach (You!)**:
     *   Embedded guide throughout the quiz
-    
+*   **Retaking the Quiz:**
+    *   When a user finishes the quiz and clicks "Take the Quiz Again," the app deletes their most recent quiz result from the database before starting a new quiz. This is done using a deviceId cookie for anonymous identification, ensuring only the latest result per user/device is stored and keeping the data clean and accurate.
+    *   For more robust tracking, the deviceId is set as a cookie on quiz completion and included in the result payload.
+
 **Rule 1: BE NORMAL**
 
 Quality: Authenticity

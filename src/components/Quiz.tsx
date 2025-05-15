@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { questions } from '@/data/questions';
 import RuleScores from './RuleScores';
 import Results from './Results';
+import Cookies from 'js-cookie';
+import { v4 as uuidv4 } from 'uuid';
 
 type Question = {
   id: number;
@@ -85,6 +87,12 @@ export default function Quiz() {
       setTimeout(() => setIsTransitioning(false), 100);
     } else {
       window.scrollTo({ top: 0, behavior: 'instant' });
+      // Set deviceId cookie if not present
+      let deviceId = Cookies.get('deviceId');
+      if (!deviceId) {
+        deviceId = uuidv4();
+        Cookies.set('deviceId', deviceId, { expires: 365 });
+      }
       setIsFinished(true);
     }
   };

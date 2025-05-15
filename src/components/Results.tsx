@@ -268,7 +268,10 @@ export default function Results({ scores, onRestart }: ResultsProps) {
               Download Your Results
             </button>
             <button
-              onClick={onRestart}
+              onClick={async () => {
+                await fetch('/api/quiz/delete-latest', { method: 'DELETE' });
+                onRestart();
+              }}
               className="text-gray-600 hover:text-gray-900 font-medium"
             >
               Take the Quiz Again
