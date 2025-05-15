@@ -1,13 +1,7 @@
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
-import prisma from '@/lib/prisma';
 import AnalyticsDashboard from '@/components/AnalyticsDashboard';
-import { QuizResult, QuestionResponse } from '@prisma/client';
-
-interface QuizResultWithResponses extends QuizResult {
-  responses: QuestionResponse[];
-  scores: Record<string, number>;
-}
+import { supabase } from '@/lib/supabaseClient';
 
 // Basic auth check - we'll improve this later
 const isAuthorized = async () => {
@@ -28,42 +22,55 @@ const isAuthorized = async () => {
 };
 
 async function getAnalyticsData() {
-  // Get all quiz results
-  const results = await prisma.quizResult.findMany({
-    include: {
-      responses: true
-    }
-  }) as unknown as QuizResultWithResponses[];
-  
+  // Fetch all quiz results from Supabase
+  const { data: results, error } = await supabase
+    .from('quiz_results')
+    .select('*');
+  if (error) throw new Error('Failed to fetch quiz results: ' + error.message);
+  if (!results || results.length === 0) {
+    return { averageScores: [], responseDistribution: [] };
+  }
+
   // Calculate average scores per rule
-  const ruleScores = results.reduce((acc: Record<string, number[]>, result: QuizResultWithResponses) => {
-    Object.entries(result.scores).forEach(([rule, score]) => {
-      if (!acc[rule]) acc[rule] = [];
-      acc[rule].push(score);
-    });
-    return acc;
-  }, {});
-  
+  const ruleScores: Record<string, number[]> = {};
+  results.forEach((result: any) => {
+    if (result.scores) {
+      Object.entries(result.scores).forEach(([rule, score]) => {
+        if (!ruleScores[rule]) ruleScores[rule] = [];
+        ruleScores[rule].push(Number(score));
+      });
+    }
+  });
   const averageScores = Object.entries(ruleScores).map(([rule, scores]) => ({
     rule,
-    score: scores.reduce((a: number, b: number) => a + b, 0) / scores.length
+    score: scores.reduce((a, b) => a + b, 0) / scores.length
   }));
-  
-  // Calculate response distributions
-  const responseDistribution = await prisma.questionResponse.groupBy({
-    by: ['ruleType', 'score'],
-    _count: true
-  });
 
-  const formattedDistribution = responseDistribution.map((d: { ruleType: string; score: number; _count: number }) => ({
-    ruleType: d.ruleType,
-    score: d.score,
-    count: d._count
-  }));
-  
+  // Fetch all per-question responses from Supabase
+  const { data: responses, error: responsesError } = await supabase
+    .from('question_responses')
+    .select('*');
+  if (responsesError) throw new Error('Failed to fetch question responses: ' + responsesError.message);
+
+  // Aggregate responses by ruleType and score
+  const responseDistributionMap: Record<string, Record<number, number>> = {};
+  responses?.forEach((resp: any) => {
+    if (!responseDistributionMap[resp.rule_type]) responseDistributionMap[resp.rule_type] = {};
+    if (!responseDistributionMap[resp.rule_type][resp.score]) responseDistributionMap[resp.rule_type][resp.score] = 0;
+    responseDistributionMap[resp.rule_type][resp.score] += 1;
+  });
+  // Convert to array format for AnalyticsDashboard
+  const responseDistribution = Object.entries(responseDistributionMap).flatMap(([ruleType, scoresObj]) =>
+    Object.entries(scoresObj).map(([score, count]) => ({
+      ruleType,
+      score: Number(score),
+      count: Number(count)
+    }))
+  );
+
   return {
     averageScores,
-    responseDistribution: formattedDistribution
+    responseDistribution
   };
 }
 

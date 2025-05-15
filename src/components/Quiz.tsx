@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { questions } from '@/data/questions';
 import RuleScores from './RuleScores';
 import Results from './Results';
@@ -52,9 +52,14 @@ export default function Quiz() {
   const getCurrentQuestions = () => {
     const startIdx = currentGroup * questionsPerGroup;
     const currentQuestions = questions.slice(startIdx, startIdx + questionsPerGroup);
-    console.log(`Getting questions for group ${currentGroup}:`, currentQuestions);
     return currentQuestions;
   };
+
+  useEffect(() => {
+    const startIdx = currentGroup * questionsPerGroup;
+    const currentQuestions = questions.slice(startIdx, startIdx + questionsPerGroup);
+    console.log(`Getting questions for group ${currentGroup}:`, currentQuestions);
+  }, [currentGroup]);
 
   const handleSliderChange = (questionId: number, value: number) => {
     setAnswers(prev => ({
@@ -93,6 +98,16 @@ export default function Quiz() {
         deviceId = uuidv4();
         Cookies.set('deviceId', deviceId, { expires: 365 });
       }
+      // Save results to Supabase
+      const scoresToSave = calculateScores();
+      console.log('Saving quiz results:', { deviceId, scores: scoresToSave, answers });
+      const response = await fetch('/api/quiz/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ deviceId, scores: scoresToSave, answers }),
+      });
+      const result = await response.json();
+      console.log('API /quiz/save response:', result);
       setIsFinished(true);
     }
   };

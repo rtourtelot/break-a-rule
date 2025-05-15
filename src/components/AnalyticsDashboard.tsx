@@ -2,6 +2,7 @@
 
 import { ResponsiveRadar } from '@nivo/radar';
 import { ResponsiveBar } from '@nivo/bar';
+import { BarTooltipProps } from '@nivo/bar';
 import jsPDF from 'jspdf';
 
 type AnalyticsDashboardProps = {
@@ -25,6 +26,21 @@ const ruleDisplayNames: Record<string, string> = {
   AuthenticRelationship: "Rule 6 - Stay in Control",
   IntegrityOfPurpose: "Rule 7 - Be Popular"
 };
+
+// Custom bar color and tooltip
+const barColor = 'url(#blue-gradient)';
+const customTooltip = (bar: BarTooltipProps<any>) => (
+  <div style={{
+    padding: '8px 12px',
+    background: '#fff',
+    border: '1px solid #e5e7eb',
+    borderRadius: 6,
+    color: '#1e3a8a',
+    fontWeight: 500
+  }}>
+    {bar.data.score}: <b>{bar.data.responses}</b> responses
+  </div>
+);
 
 export default function AnalyticsDashboard({ 
   averageScores, 
@@ -235,7 +251,15 @@ export default function AnalyticsDashboard({
             </div>
 
             {/* Response Distribution Chart */}
-            <div className="h-[200px] mt-4">
+            <div className="h-[220px] mt-4">
+              <svg width="0" height="0">
+                <defs>
+                  <linearGradient id="blue-gradient" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stopColor="#3b82f6" />
+                    <stop offset="100%" stopColor="#6366f1" />
+                  </linearGradient>
+                </defs>
+              </svg>
               <ResponsiveBar
                 data={responseDistribution
                   .filter(d => d.ruleType === stat.rule)
@@ -245,13 +269,16 @@ export default function AnalyticsDashboard({
                   }))}
                 keys={['responses']}
                 indexBy="score"
-                margin={{ top: 10, right: 10, bottom: 30, left: 40 }}
-                padding={0.3}
-                colors={{ scheme: 'nivo' }}
+                margin={{ top: 30, right: 20, bottom: 40, left: 50 }}
+                padding={0.5}
+                colors={barColor}
                 axisBottom={{
                   tickSize: 5,
                   tickPadding: 5,
-                  tickRotation: 0
+                  tickRotation: 0,
+                  legend: 'Score',
+                  legendPosition: 'middle',
+                  legendOffset: 32
                 }}
                 axisLeft={{
                   tickSize: 5,
@@ -259,9 +286,25 @@ export default function AnalyticsDashboard({
                   tickRotation: 0,
                   legend: 'Responses',
                   legendPosition: 'middle',
-                  legendOffset: -30
+                  legendOffset: -40
+                }}
+                enableLabel={true}
+                labelSkipWidth={0}
+                labelSkipHeight={0}
+                labelTextColor="#1e3a8a"
+                tooltip={customTooltip}
+                theme={{
+                  labels: { text: { fontWeight: 700, fontSize: 16 } },
+                  axis: {
+                    ticks: { text: { fill: '#334155', fontWeight: 500 } },
+                    legend: { text: { fill: '#334155', fontWeight: 600 } }
+                  }
                 }}
               />
+              <div className="text-xs text-gray-500 mt-2 text-center">
+                <span className="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 mr-2">Bar = # of responses for each score</span>
+                <span className="inline-block bg-indigo-100 text-indigo-700 rounded px-2 py-1">Blue gradient = Story Finder theme</span>
+              </div>
             </div>
           </div>
         </div>

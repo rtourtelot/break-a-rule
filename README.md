@@ -99,6 +99,15 @@ src/
     *   When a user finishes the quiz and clicks "Take the Quiz Again," the app deletes their most recent quiz result from the database before starting a new quiz. This is done using a deviceId cookie for anonymous identification, ensuring only the latest result per user/device is stored and keeping the data clean and accurate.
     *   For more robust tracking, the deviceId is set as a cookie on quiz completion and included in the result payload.
 
+---
+
+### Developer Experience Improvements
+
+*   **Reduced Console Log Spam:**
+    *   Logging for quiz group changes now occurs only when the group actually changes, not on every render. This makes debugging easier and keeps the console output clean and actionable.
+*   **Ongoing Codebase Improvements:**
+    *   The project is being actively improved for better maintainability and developer experience. Feedback and contributions are welcome!
+
 **Rule 1: BE NORMAL**
 
 Quality: Authenticity

@@ -1,32 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
+import { supabase } from '@/lib/supabaseClient';
 
 export async function DELETE(req: NextRequest) {
-  // Try to get deviceId from cookies
   const deviceId = req.cookies.get('deviceId')?.value;
-  const userAgent = req.headers.get('user-agent') || undefined;
-  const ipAddress = req.headers.get('x-forwarded-for') || req.ip || undefined;
-
-  let latestResult = null;
-  if (deviceId) {
-    latestResult = await prisma.quizResult.findFirst({
-      where: { deviceId },
-      orderBy: { createdAt: 'desc' },
-    });
-  } else if (userAgent && ipAddress) {
-    latestResult = await prisma.quizResult.findFirst({
-      where: { userAgent, ipAddress },
-      orderBy: { createdAt: 'desc' },
-    });
-  } else {
-    latestResult = await prisma.quizResult.findFirst({
-      orderBy: { createdAt: 'desc' },
-    });
+  if (!deviceId) {
+    return NextResponse.json({ error: 'No deviceId' }, { status: 400 });
   }
-
-  if (latestResult) {
-    await prisma.quizResult.delete({ where: { id: latestResult.id } });
-    return NextResponse.json({ success: true });
+  // Get the latest result for this device
+  const { data: latest, error: fetchError } = await supabase
+    .from('quiz_results')
+    .select('id')
+    .eq('device_id', deviceId)
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .single();
+  if (fetchError || !latest) {
+    return NextResponse.json({ error: fetchError?.message || 'No result found' }, { status: 404 });
   }
-  return NextResponse.json({ success: false, message: 'No result found' }, { status: 404 });
+  // Delete the latest result
+  const { error: deleteError } = await supabase
+    .from('quiz_results')
+    .delete()
+    .eq('id', latest.id);
+  if (deleteError) {
+    return NextResponse.json({ error: deleteError.message }, { status: 500 });
+  }
+  return NextResponse.json({ success: true });
 } 
