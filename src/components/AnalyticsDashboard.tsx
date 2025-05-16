@@ -17,14 +17,32 @@ type AnalyticsDashboardProps = {
   }>;
 };
 
+const ruleOrder = [
+  'Authenticity',
+  'Courage',
+  'Vulnerability',
+  'Diligence',
+  'Significance',
+  'AuthenticRelationship',
+  'IntegrityOfPurpose',
+];
 const ruleDisplayNames: Record<string, string> = {
-  Authenticity: "Rule 1 - Be Normal",
-  Courage: "Rule 2 - Avoid Mistakes",
-  Vulnerability: "Rule 3 - Be Independent",
-  Diligence: "Rule 4 - Stay Comfortable",
-  Significance: "Rule 5 - Pretend You Don't Matter",
-  AuthenticRelationship: "Rule 6 - Stay in Control",
-  IntegrityOfPurpose: "Rule 7 - Be Popular"
+  Authenticity: 'Rule 1 - Be Normal',
+  Courage: 'Rule 2 - Avoid Mistakes',
+  Vulnerability: 'Rule 3 - Be Independent',
+  Diligence: 'Rule 4 - Stay Comfortable',
+  Significance: 'Rule 5 - Pretend You Don\'t Matter',
+  AuthenticRelationship: 'Rule 6 - Stay in Control',
+  IntegrityOfPurpose: 'Rule 7 - Be Popular',
+};
+const ruleQualities: Record<string, string> = {
+  Authenticity: 'Authenticity',
+  Courage: 'Courage',
+  Vulnerability: 'Vulnerability',
+  Diligence: 'Diligence',
+  Significance: 'Significance',
+  AuthenticRelationship: 'Authentic Relationship',
+  IntegrityOfPurpose: 'Integrity of Purpose',
 };
 
 // Custom bar color and tooltip
@@ -42,36 +60,30 @@ const customTooltip = (bar: BarTooltipProps<any>) => (
   </div>
 );
 
-export default function AnalyticsDashboard({ 
-  averageScores, 
-  responseDistribution 
-}: AnalyticsDashboardProps) {
-  // Calculate statistics for each rule
-  const ruleStats = averageScores.map(({ rule, score }) => {
-    const ruleResponses = responseDistribution.filter(d => d.ruleType === rule);
-    const totalResponses = ruleResponses.reduce((sum, d) => sum + d.count, 0);
-    
-    // Calculate distribution percentages
-    const distribution = {
-      high: ruleResponses.filter(d => d.score >= 4).reduce((sum, d) => sum + d.count, 0) / totalResponses * 100,
-      medium: ruleResponses.filter(d => d.score >= 2 && d.score <= 3).reduce((sum, d) => sum + d.count, 0) / totalResponses * 100,
-      low: ruleResponses.filter(d => d.score <= 1).reduce((sum, d) => sum + d.count, 0) / totalResponses * 100
-    };
+export default function AnalyticsDashboard({ averageScores, responseDistribution }: AnalyticsDashboardProps) {
+  // Calculate overall stats
+  const totalQuizzes = averageScores.length > 0 ? Math.max(...averageScores.map(s => s.score)) : 0;
+  const overallAverage = averageScores.reduce((sum, { score }) => sum + score, 0) / (averageScores.length || 1);
+  const highestRule = averageScores.reduce((max, curr) => (curr.score > max.score ? curr : max), averageScores[0] || { rule: '', score: 0 });
+  const lowestRule = averageScores.reduce((min, curr) => (curr.score < min.score ? curr : min), averageScores[0] || { rule: '', score: 0 });
 
-    return {
-      rule,
-      displayName: ruleDisplayNames[rule] || rule,
-      averageScore: score,
-      totalResponses,
-      distribution
-    };
-  });
+  // Helper for score cutoffs (same as RuleScores.tsx)
+  function getScoreCategory(score: number) {
+    if (score >= 7) return 'high';
+    if (score >= 4) return 'medium';
+    return 'low';
+  }
 
-  // Calculate overall statistics
-  const totalQuizzes = ruleStats[0]?.totalResponses || 0;
-  const overallAverage = averageScores.reduce((sum, { score }) => sum + score, 0) / averageScores.length;
-  const highestRule = [...ruleStats].sort((a, b) => b.averageScore - a.averageScore)[0];
-  const lowestRule = [...ruleStats].sort((a, b) => a.averageScore - b.averageScore)[0];
+  // Build score distribution for each rule
+  function getScoreTable(rule: string) {
+    const dist = responseDistribution.filter(d => d.ruleType === rule);
+    const counts: Record<number, number> = {};
+    for (let i = 0; i <= 10; i++) counts[i] = 0;
+    dist.forEach(d => {
+      if (d.score >= 0 && d.score <= 10) counts[d.score] = d.count;
+    });
+    return counts;
+  }
 
   const handleDownloadPDF = () => {
     const pdf = new jsPDF();
@@ -106,9 +118,9 @@ export default function AnalyticsDashboard({
     yPos += lineHeight;
     pdf.text(`Overall Average Score: ${Math.round(overallAverage)}%`, margin, yPos);
     yPos += lineHeight;
-    pdf.text(`Highest Scoring Rule: ${highestRule?.rule} (${Math.round(highestRule?.averageScore || 0)}%)`, margin, yPos);
+    pdf.text(`Highest Scoring Rule: ${highestRule?.rule} (${Math.round(highestRule?.score || 0)}%)`, margin, yPos);
     yPos += lineHeight;
-    pdf.text(`Lowest Scoring Rule: ${lowestRule?.rule} (${Math.round(lowestRule?.averageScore || 0)}%)`, margin, yPos);
+    pdf.text(`Lowest Scoring Rule: ${lowestRule?.rule} (${Math.round(lowestRule?.score || 0)}%)`, margin, yPos);
     yPos += lineHeight * 1.5;
 
     // Rule Details
@@ -116,7 +128,7 @@ export default function AnalyticsDashboard({
     pdf.text("Rule Details", margin, yPos);
     yPos += lineHeight;
 
-    ruleStats.forEach(stat => {
+    ruleOrder.forEach(rule => {
       // Check if we need a new page
       if (yPos > pdf.internal.pageSize.height - margin * 2) {
         pdf.addPage();
@@ -125,20 +137,20 @@ export default function AnalyticsDashboard({
 
       pdf.setFontSize(14);
       pdf.setTextColor(0, 0, 0);
-      pdf.text(stat.displayName, margin, yPos);
+      pdf.text(ruleDisplayNames[rule], margin, yPos);
       yPos += lineHeight;
 
       pdf.setFontSize(12);
       pdf.setTextColor(100);
-      pdf.text(`Average Score: ${Math.round(stat.averageScore)}%`, margin + 5, yPos);
+      pdf.text(`Average Score: ${Math.round(averageScores.find(s => s.rule === rule)?.score || 0)}%`, margin + 5, yPos);
       yPos += lineHeight;
-      pdf.text(`Total Responses: ${stat.totalResponses}`, margin + 5, yPos);
+      pdf.text(`Total Responses: ${responseDistribution.filter(d => d.ruleType === rule).reduce((sum, d) => sum + d.count, 0)}`, margin + 5, yPos);
       yPos += lineHeight;
-      pdf.text(`High Scores (4-5): ${Math.round(stat.distribution.high)}%`, margin + 5, yPos);
+      pdf.text(`High Scores (7-10): ${Math.round((responseDistribution.filter(d => d.ruleType === rule && d.score >= 7).reduce((sum, d) => sum + d.count, 0) / responseDistribution.filter(d => d.ruleType === rule).reduce((sum, d) => sum + d.count, 0) * 100))}%`, margin + 5, yPos);
       yPos += lineHeight;
-      pdf.text(`Medium Scores (2-3): ${Math.round(stat.distribution.medium)}%`, margin + 5, yPos);
+      pdf.text(`Medium Scores (4-6): ${Math.round((responseDistribution.filter(d => d.ruleType === rule && d.score >= 4 && d.score < 7).reduce((sum, d) => sum + d.count, 0) / responseDistribution.filter(d => d.ruleType === rule).reduce((sum, d) => sum + d.count, 0) * 100))}%`, margin + 5, yPos);
       yPos += lineHeight;
-      pdf.text(`Low Scores (1): ${Math.round(stat.distribution.low)}%`, margin + 5, yPos);
+      pdf.text(`Low Scores (0-3): ${Math.round((responseDistribution.filter(d => d.ruleType === rule && d.score < 4).reduce((sum, d) => sum + d.count, 0) / responseDistribution.filter(d => d.ruleType === rule).reduce((sum, d) => sum + d.count, 0) * 100))}%`, margin + 5, yPos);
       yPos += lineHeight * 1.5;
     });
 
@@ -146,8 +158,8 @@ export default function AnalyticsDashboard({
   };
 
   return (
-    <div className="space-y-8">
-      {/* Summary Statistics */}
+    <div className="space-y-12">
+      {/* Overall Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
           <div className="text-sm text-gray-500 mb-1">Total Quizzes Completed</div>
@@ -159,13 +171,13 @@ export default function AnalyticsDashboard({
         </div>
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
           <div className="text-sm text-gray-500 mb-1">Highest Scoring Rule</div>
-          <div className="text-3xl font-bold text-gray-900">{Math.round(highestRule?.averageScore || 0)}%</div>
-          <div className="text-sm text-indigo-600 mt-1">{highestRule?.rule.replace(/([A-Z])/g, ' $1').trim()}</div>
+          <div className="text-3xl font-bold text-gray-900">{Math.round(highestRule?.score || 0)}%</div>
+          <div className="text-sm text-indigo-600 mt-1">{ruleDisplayNames[highestRule?.rule]}</div>
         </div>
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
           <div className="text-sm text-gray-500 mb-1">Lowest Scoring Rule</div>
-          <div className="text-3xl font-bold text-gray-900">{Math.round(lowestRule?.averageScore || 0)}%</div>
-          <div className="text-sm text-indigo-600 mt-1">{lowestRule?.rule.replace(/([A-Z])/g, ' $1').trim()}</div>
+          <div className="text-3xl font-bold text-gray-900">{Math.round(lowestRule?.score || 0)}%</div>
+          <div className="text-sm text-indigo-600 mt-1">{ruleDisplayNames[lowestRule?.rule]}</div>
         </div>
       </div>
 
@@ -179,136 +191,79 @@ export default function AnalyticsDashboard({
         </button>
       </div>
 
-      {/* Overview Card */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
-        <h2 className="text-2xl font-medium text-gray-900 mb-4">Overall Statistics</h2>
-        <div className="h-[400px]">
-          <ResponsiveRadar
-            data={averageScores}
-            keys={['score']}
-            indexBy="rule"
-            maxValue={100}
-            margin={{ top: 70, right: 80, bottom: 40, left: 80 }}
-            borderColor={{ from: 'color' }}
-            gridLabelOffset={36}
-            dotSize={10}
-            dotColor={{ theme: 'background' }}
-            dotBorderWidth={2}
-            colors={{ scheme: 'nivo' }}
-            blendMode="multiply"
-            motionConfig="wobbly"
-          />
-        </div>
-      </div>
-
-      {/* Rule Cards */}
-      {ruleStats.map(stat => (
-        <div 
-          key={stat.rule}
-          className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 space-y-6"
-        >
-          <div className="space-y-4">
+      {/* Rules in order */}
+      {ruleOrder.map(rule => {
+        const avg = averageScores.find(s => s.rule === rule)?.score || 0;
+        const dist = responseDistribution.filter(d => d.ruleType === rule);
+        const totalResponses = dist.reduce((sum, d) => sum + d.count, 0);
+        const high = dist.filter(d => d.score >= 7).reduce((sum, d) => sum + d.count, 0);
+        const medium = dist.filter(d => d.score >= 4 && d.score < 7).reduce((sum, d) => sum + d.count, 0);
+        const low = dist.filter(d => d.score < 4).reduce((sum, d) => sum + d.count, 0);
+        const highPct = totalResponses ? Math.round((high / totalResponses) * 100) : 0;
+        const medPct = totalResponses ? Math.round((medium / totalResponses) * 100) : 0;
+        const lowPct = totalResponses ? Math.round((low / totalResponses) * 100) : 0;
+        const scoreTable = getScoreTable(rule);
+        return (
+          <div key={rule} className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 space-y-6">
             <div>
-              <h2 className="text-2xl font-medium text-indigo-600 mb-1">
-                {stat.displayName}
-              </h2>
-              <div className="text-base text-gray-600">
-                {stat.rule.replace(/([A-Z])/g, ' $1').trim()}
-              </div>
+              <h2 className="text-2xl font-medium text-indigo-600 mb-1">{ruleDisplayNames[rule]}</h2>
+              <div className="text-base text-gray-600 mb-2">{ruleQualities[rule]}</div>
             </div>
-
-            {/* Score and Progress Bar */}
             <div className="flex items-center gap-3">
-              <div className="text-4xl font-bold text-gray-900">
-                {Math.round(stat.averageScore)}%
-              </div>
+              <div className="text-4xl font-bold text-gray-900">{Math.round(avg)}%</div>
               <div className="h-2 flex-1 bg-gray-100 rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-gradient-to-r from-blue-500 to-indigo-500"
-                  style={{ width: `${stat.averageScore}%` }}
-                />
+                <div className="h-full bg-gradient-to-r from-blue-500 to-indigo-500" style={{ width: `${avg}%` }} />
               </div>
             </div>
-
-            {/* Statistics Grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4">
               <div className="space-y-1">
                 <div className="text-sm text-gray-500">Total Responses</div>
-                <div className="text-2xl font-semibold text-gray-900">{stat.totalResponses}</div>
+                <div className="text-2xl font-semibold text-gray-900">{totalResponses}</div>
               </div>
               <div className="space-y-1">
-                <div className="text-sm text-gray-500">High Scores (4-5)</div>
-                <div className="text-2xl font-semibold text-green-600">{Math.round(stat.distribution.high)}%</div>
+                <div className="text-sm text-gray-500">High Scores (7-10)</div>
+                <div className="text-2xl font-semibold text-green-600">{highPct}%</div>
               </div>
               <div className="space-y-1">
-                <div className="text-sm text-gray-500">Medium Scores (2-3)</div>
-                <div className="text-2xl font-semibold text-yellow-600">{Math.round(stat.distribution.medium)}%</div>
+                <div className="text-sm text-gray-500">Medium Scores (4-6)</div>
+                <div className="text-2xl font-semibold text-yellow-600">{medPct}%</div>
               </div>
               <div className="space-y-1">
-                <div className="text-sm text-gray-500">Low Scores (1)</div>
-                <div className="text-2xl font-semibold text-red-600">{Math.round(stat.distribution.low)}%</div>
+                <div className="text-sm text-gray-500">Low Scores (0-3)</div>
+                <div className="text-2xl font-semibold text-red-600">{lowPct}%</div>
               </div>
             </div>
-
-            {/* Response Distribution Chart */}
-            <div className="h-[220px] mt-4">
-              <svg width="0" height="0">
-                <defs>
-                  <linearGradient id="blue-gradient" x1="0" y1="0" x2="1" y2="0">
-                    <stop offset="0%" stopColor="#3b82f6" />
-                    <stop offset="100%" stopColor="#6366f1" />
-                  </linearGradient>
-                </defs>
-              </svg>
-              <ResponsiveBar
-                data={responseDistribution
-                  .filter(d => d.ruleType === stat.rule)
-                  .map(d => ({
-                    score: `Score ${d.score}`,
-                    responses: d.count
-                  }))}
-                keys={['responses']}
-                indexBy="score"
-                margin={{ top: 30, right: 20, bottom: 40, left: 50 }}
-                padding={0.5}
-                colors={barColor}
-                axisBottom={{
-                  tickSize: 5,
-                  tickPadding: 5,
-                  tickRotation: 0,
-                  legend: 'Score',
-                  legendPosition: 'middle',
-                  legendOffset: 32
-                }}
-                axisLeft={{
-                  tickSize: 5,
-                  tickPadding: 5,
-                  tickRotation: 0,
-                  legend: 'Responses',
-                  legendPosition: 'middle',
-                  legendOffset: -40
-                }}
-                enableLabel={true}
-                labelSkipWidth={0}
-                labelSkipHeight={0}
-                labelTextColor="#1e3a8a"
-                tooltip={customTooltip}
-                theme={{
-                  labels: { text: { fontWeight: 700, fontSize: 16 } },
-                  axis: {
-                    ticks: { text: { fill: '#334155', fontWeight: 500 } },
-                    legend: { text: { fill: '#334155', fontWeight: 600 } }
-                  }
-                }}
-              />
-              <div className="text-xs text-gray-500 mt-2 text-center">
-                <span className="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 mr-2">Bar = # of responses for each score</span>
-                <span className="inline-block bg-indigo-100 text-indigo-700 rounded px-2 py-1">Blue gradient = Story Finder theme</span>
-              </div>
+            {/* Score Distribution Table */}
+            <div className="overflow-x-auto mt-4">
+              <table className="min-w-full border border-gray-200 rounded text-center">
+                <thead>
+                  <tr className="bg-gray-50 border-b border-gray-200">
+                    <th className="px-2 py-1 text-xs text-gray-500 font-semibold text-left">Score</th>
+                    {Array.from({ length: 11 }, (_, i) => (
+                      <th key={i} className="px-2 py-1 text-xs text-gray-500 font-semibold">{i}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="bg-white text-base font-semibold border-t border-gray-100">
+                    <td className="text-xs text-gray-500 font-medium text-left bg-gray-50">Responses</td>
+                    {Array.from({ length: 11 }, (_, i) => (
+                      <td key={i} className="px-2 py-1 font-semibold text-gray-700">{scoreTable[i]}</td>
+                    ))}
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
+      {/* Legend/help */}
+      <div className="text-xs text-gray-500 mt-8 text-center">
+        <span className="inline-block bg-blue-100 text-blue-700 rounded px-2 py-1 mr-2">High: 7-10</span>
+        <span className="inline-block bg-yellow-100 text-yellow-700 rounded px-2 py-1 mr-2">Medium: 4-6</span>
+        <span className="inline-block bg-red-100 text-red-700 rounded px-2 py-1">Low: 0-3</span>
+        <span className="inline-block ml-4">Table shows number of respondents for each score (0-10)</span>
+      </div>
     </div>
   );
 } 

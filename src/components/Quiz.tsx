@@ -100,11 +100,16 @@ export default function Quiz() {
       }
       // Save results to Supabase
       const scoresToSave = calculateScores();
-      console.log('Saving quiz results:', { deviceId, scores: scoresToSave, answers });
+      // Ensure all questions are present in answers, defaulting to 5
+      const allAnswers: Record<number, number> = {};
+      questions.forEach(q => {
+        allAnswers[q.id] = answers[q.id] ?? 5;
+      });
+      console.log('Saving quiz results:', { deviceId, scores: scoresToSave, answers: allAnswers });
       const response = await fetch('/api/quiz/save', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ deviceId, scores: scoresToSave, answers }),
+        body: JSON.stringify({ deviceId, scores: scoresToSave, answers: allAnswers }),
       });
       const result = await response.json();
       console.log('API /quiz/save response:', result);

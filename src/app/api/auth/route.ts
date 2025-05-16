@@ -1,45 +1,35 @@
 import { NextResponse } from 'next/server';
-import { headers } from 'next/headers';
 
-export async function GET(request: Request) {
-  const headersList = await headers();
-  const authorization = headersList.get('authorization');
-
-  if (!authorization) {
-    return new NextResponse('Unauthorized', {
-      status: 401,
-      headers: {
-        'WWW-Authenticate': 'Basic realm="Admin Access"'
-      }
-    });
-  }
-
-  // Basic auth format: "Basic base64(username:password)"
-  const [scheme, credentials] = authorization.split(' ');
-  if (scheme !== 'Basic') {
-    return new NextResponse('Invalid authentication scheme', { status: 400 });
-  }
-
-  const decodedCredentials = Buffer.from(credentials, 'base64').toString();
-  const [username, password] = decodedCredentials.split(':');
-
-  if (
-    username === process.env.ADMIN_USERNAME &&
-    password === process.env.ADMIN_PASSWORD
-  ) {
-    // Instead of redirecting, return a success response
-    return new NextResponse(null, {
-      status: 200,
-      headers: {
-        'Set-Cookie': `adminAuth=${Buffer.from(`${username}:${password}`).toString('base64')}; Path=/; HttpOnly; SameSite=Strict`
-      }
-    });
-  }
-
-  return new NextResponse('Unauthorized', {
-    status: 401,
-    headers: {
-      'WWW-Authenticate': 'Basic realm="Admin Access"'
+export async function POST(request: Request) {
+  try {
+    const { username, password } = await request.json();
+    if (
+      username === process.env.ADMIN_USERNAME &&
+      password === process.env.ADMIN_PASSWORD
+    ) {
+      // Set a base64-encoded username:password cookie
+      const encoded = Buffer.from(`${username}:${password}`).toString('base64');
+      return new NextResponse(null, {
+        status: 200,
+        headers: {
+          'Set-Cookie': `adminAuth=${encoded}; Path=/; HttpOnly; SameSite=Strict`
+        }
+      });
     }
-  });
+    return new NextResponse('Unauthorized', { status: 401 });
+  } catch (e) {
+    return new NextResponse('Bad Request', { status: 400 });
+  }
+}
+
+export function GET() {
+  return new NextResponse('Method Not Allowed', { status: 405 });
+}
+
+export function PUT() {
+  return new NextResponse('Method Not Allowed', { status: 405 });
+}
+
+export function DELETE() {
+  return new NextResponse('Method Not Allowed', { status: 405 });
 } 

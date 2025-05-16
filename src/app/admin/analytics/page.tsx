@@ -26,7 +26,10 @@ async function getAnalyticsData() {
   const { data: results, error } = await supabase
     .from('quiz_results')
     .select('*');
-  if (error) throw new Error('Failed to fetch quiz results: ' + error.message);
+  if (error) {
+    console.error('Error fetching quiz_results:', error);
+    throw new Error('Failed to fetch quiz results: ' + error.message);
+  }
   if (!results || results.length === 0) {
     return { averageScores: [], responseDistribution: [] };
   }
@@ -50,7 +53,10 @@ async function getAnalyticsData() {
   const { data: responses, error: responsesError } = await supabase
     .from('question_responses')
     .select('*');
-  if (responsesError) throw new Error('Failed to fetch question responses: ' + responsesError.message);
+  if (responsesError) {
+    console.error('Error fetching question_responses:', responsesError);
+    throw new Error('Failed to fetch question responses: ' + responsesError.message);
+  }
 
   // Aggregate responses by ruleType and score
   const responseDistributionMap: Record<string, Record<number, number>> = {};
@@ -77,20 +83,30 @@ async function getAnalyticsData() {
 export default async function AdminAnalyticsPage() {
   const authorized = await isAuthorized();
   if (!authorized) {
-    return redirect('/api/auth');
+    return redirect('/admin/login');
   }
-  
-  const { averageScores, responseDistribution } = await getAnalyticsData();
-  
-  return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Analytics Dashboard</h1>
-        <AnalyticsDashboard 
-          averageScores={averageScores}
-          responseDistribution={responseDistribution}
-        />
+
+  try {
+    const { averageScores, responseDistribution } = await getAnalyticsData();
+    return (
+      <div className="min-h-screen bg-gray-50 py-8">
+        <div className="max-w-7xl mx-auto px-4">
+          <h1 className="text-3xl font-bold text-gray-900 mb-8">Analytics Dashboard</h1>
+          <AnalyticsDashboard 
+            averageScores={averageScores}
+            responseDistribution={responseDistribution}
+          />
+        </div>
       </div>
-    </div>
-  );
+    );
+  } catch (err: any) {
+    console.error('Error rendering analytics page:', err);
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="bg-white p-8 rounded shadow text-red-600 text-lg font-semibold">
+          Error loading analytics: {err.message}
+        </div>
+      </div>
+    );
+  }
 } 
